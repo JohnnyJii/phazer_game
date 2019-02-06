@@ -3,6 +3,8 @@ let config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    pixelArt: true,
+    zoom: 2,
     physics: {
         default: 'arcade',
         arcade: {
@@ -17,9 +19,10 @@ let config = {
     }
 };
 
+let zoom = 2;
 let player;
 let stars;
-let bonbs;
+let bombs;
 let platforms;
 let cursors;
 let score = 0;
@@ -97,7 +100,24 @@ function create () {
 
     this.physics.add.overlap(player, stars, collectStar, null, this);
     this.physics.add.collider(player, bombs, hitBomb, null, this);
+
+    window.addEventListener('resize', resize);
+    resize();
 }
+
+function resize() {
+    var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
+    var wratio = width / height, ratio = canvas.width / canvas.height;
+
+    if (wratio < ratio) {
+        canvas.style.width = width + "px";
+        canvas.style.height = (width / ratio) + "px";
+    } else {
+        canvas.style.width = (height * ratio) + "px";
+        canvas.style.height = height + "px";
+    }
+}
+
 //ohjaimet näppikselle//
 function update () {
     if (gameOver) {
