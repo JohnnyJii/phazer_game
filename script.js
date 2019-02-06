@@ -19,7 +19,6 @@ let config = {
     }
 };
 
-let zoom = 2;
 let player;
 let stars;
 let bombs;
@@ -119,6 +118,7 @@ function resize() {
 }
 
 //ohjaimet näppikselle//
+
 function update () {
     if (gameOver) {
         return;
