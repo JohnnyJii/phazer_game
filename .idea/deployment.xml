@@ -5,7 +5,7 @@
       <paths name="shell.metropolia.fi">
         <serverdata>
           <mappings>
-            <mapping deploy="/public_html/phazer_game" local="C:/xampp/htdocs/Game" web="/phaze_game" />
+            <mapping deploy="/public_html/phazer_game" local="$PROJECT_DIR$" web="/phaze_game" />
           </mappings>
         </serverdata>
       </paths>

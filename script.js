@@ -1,10 +1,11 @@
 
 let config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    pixelArt: true,
-    zoom: 2,
+    type:             Phaser.AUTO,
+    parent:           'phaser',
+    width:             800,
+    height:           600,
+    pixelArt:         true,
+    zoom:             2,
     physics: {
         default: 'arcade',
         arcade: {
@@ -29,6 +30,13 @@ let scoreText;
 let gameOver = false;
 
 let game = new Phaser.Game(config);
+
+game.CONFIG = {
+    width: config.width,
+    height: config.height,
+    centerX: Math.round(0.5 * config.width),
+    centerY: Math.round(0.5 * config.height)
+};
 
 function preload () {
     this.load.image('sky', 'assets/sky.png');
@@ -100,22 +108,29 @@ function create () {
     this.physics.add.overlap(player, stars, collectStar, null, this);
     this.physics.add.collider(player, bombs, hitBomb, null, this);
 
-    window.addEventListener('resize', resize);
-    resize();
 }
 
 function resize() {
-    var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
-    var wratio = width / height, ratio = canvas.width / canvas.height;
+    let game_ratio = (800) / (600);
+    let div = document.getElementById('phaser');
+    div.style.width = (window.innerHeight * game_ratio) + 'px';
+    div.style.height = window.innerHeight + 'px';
 
-    if (wratio < ratio) {
-        canvas.style.width = width + "px";
-        canvas.style.height = (width / ratio) + "px";
-    } else {
-        canvas.style.width = (height * ratio) + "px";
-        canvas.style.height = height + "px";
-    }
+    let canvas = document.getElementsByTagName('canvas')[0];
+    let dpi_w = (parseInt(div.style.width) / canvas.width);
+    let dpi_h = (parseInt(div.style.height) / canvas.height);
+    let height = window.innerHeight * (dpi_w / dpi_h);
+    let width = height * game_ratio;
+
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+
 }
+
+
+window.addEventListener('resize', resize);
+resize();
+
 
 //ohjaimet näppikselle//
 
@@ -148,7 +163,7 @@ function collectStar(player, star) {
         stars.children.iterate(function (child) {
             child.enableBody(true, child.x, 0, true, true);
         });
-        let x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaseer.Math.Between(0, 400);
+        let x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
         let bomb = bombs.create(x, 16, 'bomb');
         bomb.setBounce(1);
         bomb.setCollideWorldBounds(true);
